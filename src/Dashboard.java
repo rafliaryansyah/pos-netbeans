@@ -255,8 +255,11 @@ public class Dashboard extends javax.swing.JFrame {
         resetButton.addActionListener(e -> resetCart());
         removeButton.addActionListener(e -> removeSelectedItem());
         
-        // Initialize cash input field
+        // Initialize cash input field with better styling
         cashInputField.setText("0.00");
+        cashInputField.setOpaque(true);
+        cashInputField.setEditable(true);
+        cashInputField.setVisible(true);
         
         // Add search panel to products panel
         setupSearchPanel();
@@ -326,7 +329,7 @@ public class Dashboard extends javax.swing.JFrame {
         paymentMethodCombo.setPreferredSize(new Dimension(200, 35));
         contentPanel.add(paymentMethodCombo, gbc);
         
-        // Cash input - make input field larger
+        // Cash input - make input field larger and more visible
         gbc.gridx = 0; gbc.gridy = 4;
         JLabel cashTextLabel = new JLabel("Cash:");
         cashTextLabel.setFont(labelFont);
@@ -334,6 +337,13 @@ public class Dashboard extends javax.swing.JFrame {
         gbc.gridx = 1;
         cashInputField.setFont(new Font("Arial", Font.BOLD, 16));
         cashInputField.setPreferredSize(new Dimension(200, 35));
+        cashInputField.setBackground(Color.WHITE);
+        cashInputField.setForeground(Color.BLACK);
+        cashInputField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(70, 130, 180), 2),
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        ));
+        cashInputField.setHorizontalAlignment(JTextField.RIGHT);
         contentPanel.add(cashInputField, gbc);
         
         // Change - make change label larger

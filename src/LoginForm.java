@@ -23,6 +23,16 @@ public class LoginForm extends javax.swing.JFrame {
     public LoginForm() {
         initComponents();
     }
+    
+    private void openDashboard() {
+        try {
+            Dashboard dashboard = new Dashboard();
+            dashboard.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error opening Product form: " + e.getMessage());
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -126,11 +136,11 @@ public class LoginForm extends javax.swing.JFrame {
         // VALIDASI APAKAH PASSWORD BENAR ATAU SALAH
         // CEK ROLE USER REDIRECT KE DASHBOARD SESUAI DENGAN ROLE/HAK_AKSES
         
-        String username = jTextField1.getText().trim();
+        String email = jTextField1.getText().trim();
         String inputPassword = new String(jPasswordField1.getPassword()).trim();
 
-        if (username.isEmpty() || inputPassword.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Username dan Password harus diisi.");
+        if (email.isEmpty() || inputPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Email dan Password harus diisi.");
             return;
         }
 
@@ -142,20 +152,20 @@ public class LoginForm extends javax.swing.JFrame {
         try {
             Connection conn = DatabaseConnection.connect();
 
-            String sql = "SELECT password, hak_akses FROM users WHERE username = ?";
+            String sql = "SELECT password, role FROM users WHERE email = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, username);
+            stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 String dbHashedPassword = rs.getString("password");
                 String inputHashed = HashUtil.hashPassword(inputPassword);
-                String role = rs.getString("hak_akses");
-                 if (dbHashedPassword.equals(inputHashed)) {
-            JOptionPane.showMessageDialog(this, "Login berhasil sebagai " + role);
+                String role = rs.getString("role");
+                if (dbHashedPassword.equals(inputHashed)) {
+                    JOptionPane.showMessageDialog(this, "Login berhasil sebagai " + role);
 
-            if ("Admin".equalsIgnoreCase(role)) {
-                new Dashboard().setVisible(true);
+                if ("Admin".equalsIgnoreCase(role) || "User".equalsIgnoreCase(role)) {
+                    openDashboard();
             } else if ("Pegawai".equalsIgnoreCase(role)) {
                 new DashboardPegawai().setVisible(true);
             } else {
