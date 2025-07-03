@@ -1,5 +1,7 @@
 # LAPORAN TUGAS KELOMPOK
 ## SISTEM POINT OF SALE (POS)
+
+**Dosen: Niki Ratama, S.Kom., M.Kom**  
 **Mata Kuliah: Pemrograman 1**  
 **Semester 4 - UNPAM**
 
@@ -7,11 +9,11 @@
 
 ## 👥 ANGGOTA KELOMPOK
 
-1. **Rafli** 
-2. **Faiz**
-3. **Dava** 
-4. **Frans**
-5. **Izzedin**
+1. **MUHAMMAD RAFLI ARYANSYAH - 231011401531** 
+2. **AHMAD FAIZ RAMDHANI - 231011401478**
+3. **DAVA ARDIANSYAH - 231011401515** 
+4. **FRANSISKUS RIANTO HARSEN - 231011401532**
+5. **IZZEDIN SALMAN ALFARISI - 231011401487**
 
 ---
 
@@ -55,8 +57,7 @@ Sistem Point of Sale (POS) adalah aplikasi desktop berbasis Java Swing yang dira
 ## 🗄️ RANCANGAN BASIS DATA
 
 ### ERD (Entity Relationship Diagram)
-<!-- TARUH GAMBAR ERD DISINI -->
-*Silakan taruh gambar ERD (Entity Relationship Diagram) di sini*
+![Halmaan Login!](/assets/ERD.png "Halaman Login")
 
 ### Struktur Database
 
@@ -338,7 +339,6 @@ POS/
 ### 1. Login Form
 
 ![Halmaan Login!](/assets/Login.png "Halaman Login")
-*Silakan taruh screenshot Login Form di sini*
 
 **Fitur Login Form:**
 - Input email dan password
@@ -521,7 +521,7 @@ Melalui projek ini, tim telah mempelajari:
 ### Refleksi Kelompok atau Personal
 Projek POS ini menjadi pembelajaran berharga pribadi:
 - **Technical Skills**: Java programming, database design, UI/UX
-- **Soft Skills**: <del>Teamwork<del>, communication, problem-solving
+- **Soft Skills**: <del>Teamwork, communication, problem-solving
 - **Project Management**: Planning, execution, testing, documentation
 
 ---
@@ -529,13 +529,14 @@ Projek POS ini menjadi pembelajaran berharga pribadi:
 ## 📞 INFORMASI KONTAK
 
 **Tim Pengembang:**
-- 👨‍💻 **Muhammad Rafli Aryansyah** - Project Lead & Fullstack Developer
-- 👨‍💻 **Faiz**
-- 👨‍💻 **Dava**
-- 👨‍💻 **Frans**
-- 👨‍💻 **Izzedin**
+- 👨‍💻 **MUHAMMAD RAFLI ARYANSYAH - 231011401531** 
+- 👨‍💻 **AHMAD FAIZ RAMDHANI - 231011401478**
+- 👨‍💻 **DAVA ARDIANSYAH - 231011401515** 
+- 👨‍💻 **FRANSISKUS RIANTO HARSEN - 231011401532**
+- 👨‍💻 **IZZEDIN SALMAN ALFARISI - 231011401487**
 
-**Repository:** https://github.com/rafliaryansyah/pos-netbeans
+**Repository:** [Github Repository](https://github.com/rafliaryansyah/pos-netbeans).
+
 **Documentation:** [Link to detailed docs]  
 **Demo Video:** [Link to demo video]
 

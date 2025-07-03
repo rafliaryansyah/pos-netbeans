@@ -414,7 +414,7 @@ ant run
 
 ## 👥 Team & Credits
 
-**Developer**: Rafli  
+**Developer**: Muhammad Rafli Aryansyah
 **Institution**: Universitas Pamulang - Semester 4  
 **Course**: Pemrograman 1  
 **Project Type**: Kelompok (Group Project)
