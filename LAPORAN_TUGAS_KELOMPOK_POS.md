@@ -536,9 +536,7 @@ Projek POS ini menjadi pembelajaran berharga pribadi:
 - 👨‍💻 **IZZEDIN SALMAN ALFARISI - 231011401487**
 
 **Repository:** [Github Repository](https://github.com/rafliaryansyah/pos-netbeans).
-
-**Documentation:** [Link to detailed docs]  
-**Demo Video:** [Link to demo video]
+**Demo Video:** [Google Drive](https://drive.google.com/file/d/1B3CLfE0bwnr51c90usmUqCvutD_C60hW/view?usp=drive_link)
 
 ---
 

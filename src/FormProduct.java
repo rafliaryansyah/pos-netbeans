@@ -44,6 +44,9 @@ public class FormProduct extends javax.swing.JFrame {
     // Image handling variables
     private String currentImagePath = null;
     private final String UPLOAD_DIRECTORY = "uploads/products/";
+    
+    // Callback interface for Dashboard refresh
+    private Runnable dashboardRefreshCallback;
 
     /**
      * Creates new form FormPegawai
@@ -52,6 +55,13 @@ public class FormProduct extends javax.swing.JFrame {
         initComponents();
         initImageComponents();
         getProducts();
+    }
+    
+    /**
+     * Set callback to refresh Dashboard when products are modified
+     */
+    public void setDashboardRefreshCallback(Runnable callback) {
+        this.dashboardRefreshCallback = callback;
     }
     
     private void clearDialogFields() {
@@ -279,38 +289,41 @@ public class FormProduct extends javax.swing.JFrame {
     
     // Soft Delete Product
     private void softDeleteProduct(int productId, String productName) {
-        try (Connection conn = DatabaseConnection.connect()) {
-            String sql = "UPDATE products SET deleted_at = NOW() WHERE id = ?";
+        try {
+            Connection conn = DatabaseConnection.connect();
+            
+            // Soft delete - set deleted_at timestamp instead of actually deleting
+            String sql = "UPDATE products SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, productId);
             
             int rowsAffected = stmt.executeUpdate();
+            conn.close();
             
             if (rowsAffected > 0) {
                 JOptionPane.showMessageDialog(this, 
-                    "Produk '" + productName + "' berhasil dihapus!", 
-                    "Sukses", 
+                    "Produk '" + productName + "' berhasil dihapus!\n\nCatatan: Data masih dapat dipulihkan dari database.", 
+                    "Hapus Berhasil", 
                     JOptionPane.INFORMATION_MESSAGE);
                 
-                // Refresh data display
+                // Refresh the product table to show changes
                 getProducts();
+                
+                // Call dashboard refresh callback
+                if (dashboardRefreshCallback != null) {
+                    dashboardRefreshCallback.run();
+                }
             } else {
                 JOptionPane.showMessageDialog(this, 
                     "Gagal menghapus produk '" + productName + "'!", 
-                    "Error", 
+                    "Hapus Gagal", 
                     JOptionPane.ERROR_MESSAGE);
             }
             
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, 
-                "Gagal menghapus data: " + e.getMessage(), 
+                "Error menghapus produk: " + e.getMessage(), 
                 "Database Error", 
-                JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Terjadi kesalahan: " + e.getMessage(), 
-                "Error", 
                 JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
@@ -746,6 +759,11 @@ public class FormProduct extends javax.swing.JFrame {
 
                 // Optional: Set focus back to first field
                 jTextField1.requestFocus();
+
+                // Call dashboard refresh callback
+                if (dashboardRefreshCallback != null) {
+                    dashboardRefreshCallback.run();
+                }
             } else {
                 String errorMessage = isUpdateMode ? "Gagal mengupdate data produk!" : "Gagal menyimpan data produk!";
                 JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);

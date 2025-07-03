@@ -138,6 +138,9 @@ public class Dashboard extends javax.swing.JFrame {
     private void openFormProduct() {
         try {
             FormProduct formProduct = new FormProduct();
+            formProduct.setDashboardRefreshCallback(() -> {
+                loadProducts(); // Refresh products when FormProduct closes
+            });
             formProduct.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error opening Product form: " + e.getMessage());
@@ -237,9 +240,14 @@ public class Dashboard extends javax.swing.JFrame {
             cashInputField.setEnabled(isCash);
             enableNumpad(isCash);
             if (!isCash) {
-                cashInputField.setText(currencyFormat.format(total));
+                cashInputField.setText(String.valueOf(total));
                 amountPaid = total;
                 updateTransactionDisplay();
+            } else {
+                // Reset to 0 when switching back to cash
+                if (cashInputField.getText().equals(String.valueOf(total))) {
+                    cashInputField.setText("0.00");
+                }
             }
         });
         
@@ -260,6 +268,24 @@ public class Dashboard extends javax.swing.JFrame {
         cashInputField.setOpaque(true);
         cashInputField.setEditable(true);
         cashInputField.setVisible(true);
+        
+        // Add DocumentListener to cash input field for real-time change calculation
+        cashInputField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateTransactionDisplay();
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateTransactionDisplay();
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateTransactionDisplay();
+            }
+        });
         
         // Add search panel to products panel
         setupSearchPanel();
@@ -642,18 +668,27 @@ public class Dashboard extends javax.swing.JFrame {
         taxLabel.setText("Rp " + currencyFormat.format(taxAmount));
         totalLabel.setText("Rp " + currencyFormat.format(total));
         
-        // Calculate change
+        // Calculate change - Fix the parsing issue
         try {
-            amountPaid = Double.parseDouble(cashInputField.getText().replace(",", ""));
+            String cashText = cashInputField.getText().replace(",", "").replace("Rp ", "").trim();
+            if (cashText.isEmpty()) {
+                amountPaid = 0.0;
+            } else {
+                amountPaid = Double.parseDouble(cashText);
+            }
         } catch (NumberFormatException e) {
             amountPaid = 0.0;
         }
         
         changeAmount = amountPaid - total;
-        if (changeAmount < 0) changeAmount = 0;
         
-        changeLabel.setText("Rp " + currencyFormat.format(changeAmount));
-        changeLabel.setForeground(changeAmount >= 0 ? new Color(0, 150, 0) : Color.RED);
+        // Show change even if negative (indicates insufficient payment)
+        changeLabel.setText("Rp " + currencyFormat.format(Math.abs(changeAmount)));
+        if (changeAmount >= 0) {
+            changeLabel.setForeground(new Color(0, 150, 0)); // Green for positive change
+        } else {
+            changeLabel.setForeground(Color.RED); // Red for insufficient payment
+        }
     }
     
     private void handleNumpadClick(String buttonText) {
